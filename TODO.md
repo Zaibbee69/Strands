@@ -1,0 +1,73 @@
+# Strand — Todo List
+
+## 1. Project Setup
+
+- [ ] Init repo, choose stack (Node/Express, DB — Postgres/Mongo, etc.)
+- [ ] Set up folder structure (MVC or similar)
+- [ ] Configure environment variables (.env)
+- [ ] Set up DB connection + ORM/schema (users, posts, comments, follows, likes)
+
+## 2. Authentication
+
+- [ ] Install & configure Passport
+- [ ] Implement Passport Local strategy (signup/login forms)
+- [ ] Implement Passport GitHub strategy (OAuth app + credentials)
+- [ ] Implement Guest sign-in (temp/anonymous session, no DB record or ephemeral user)
+- [ ] Session/cookie handling (express-session or JWT)
+- [ ] Auth middleware to protect routes
+- [ ] Basic sign-in / sign-up pages (UI)
+
+## 3. User & Profile
+
+- [ ] User model (username, email, password hash, avatar, bio)
+- [ ] Profile page (view own/other profiles)
+- [ ] Avatar handling: GitHub avatar → fallback to Gravatar
+- [ ] Update profile photo functionality
+- [ ] Follow/unfollow logic (follow requests, pending state)
+- [ ] Users index page (list all users + follow/pending/following button states)
+
+## 4. Posts
+
+- [ ] Post model (author, content, image URL, timestamp, likes/dislikes)
+- [ ] Create post (text only first)
+- [ ] Add image support to posts (URL input first, then upload via Cloudinary/Supabase)
+- [ ] Like/dislike (upvote/downvote) logic + button UI
+- [ ] Feed query: recent posts
+- [ ] Feed query: posts from followed users
+- [ ] Post card UI (avatar, date, content, like count, comment count)
+
+## 5. Comments
+
+- [ ] Comment model (post ref, author, content, timestamp)
+- [ ] Add comment functionality
+- [ ] Display comments under each post
+- [ ] Comment count on post card
+
+## 6. Home Page Layout
+
+- [ ] Left sidebar navigation
+- [ ] Right sidebar: newest users + most-followed users
+- [ ] Main feed area (toggle: recent / following)
+- [ ] Masonry layout for feed/grid section
+- [ ] Instagram-style top bar/nav
+
+## 7. Seeding & Data
+
+- [ ] Set up Faker.js
+- [ ] Seed script: fake users, posts, comments, follows, likes
+
+## 8. Polish & UX
+
+- [ ] Loading/skeleton states for infinite scroll
+- [ ] Infinite scroll or pagination on feed
+- [ ] Empty states (no posts, no followers, etc.)
+- [ ] Responsive design pass
+- [ ] Worm-themed branding: logo, favicon, loading animation, color palette
+- [ ] Error handling / 404 pages
+
+## 9. Stretch Goals (Nice-to-Have)
+
+- [ ] Real-time notifications (likes, comments, follows) — Socket.io or similar
+- [ ] Real-time chat between users
+- [ ] Notification bell/dropdown UI
+- [ ] Deploy (Render/Railway/Vercel + DB host)

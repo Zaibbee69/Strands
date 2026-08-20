@@ -13,3 +13,203 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+// ------------------------------------------------
+// ENUMS
+// ------------------------------------------------
+
+enum AuthProvider {
+  LOCAL
+  GITHUB
+  GUEST
+}
+
+enum FollowStatus {
+  PENDING
+  ACCEPTED
+}
+
+enum VoteType {
+  LIKE
+  DISLIKE
+}
+
+// ------------------------------------------------
+// USER
+// ------------------------------------------------
+
+model User {
+  id            String       @id @default(cuid())
+  username      String       @unique
+  email         String?      @unique // optional: guests/github may not have one
+  passwordHash  String? // only set for LOCAL auth
+  avatarUrl     String? // github avatar / gravatar / uploaded
+  bio           String?
+  authProvider  AuthProvider @default(LOCAL)
+  githubId      String?      @unique // github oauth id, if applicable
+  isGuest       Boolean      @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  posts          Post[]
+  comments       Comment[]
+  votes          Vote[]
+
+  // follow relations (this user following others)
+  following      Follow[]   @relation("Follower")
+  // follow relations (others following this user)
+  followers      Follow[]   @relation("Following")
+
+  notifications       Notification[] @relation("NotificationRecipient")
+  triggeredNotifications Notification[] @relation("NotificationActor")
+
+  sentMessages     Message[] @relation("MessageSender")
+  receivedMessages Message[] @relation("MessageRecipient")
+
+  @@index([username])
+}
+
+// ------------------------------------------------
+// FOLLOW (with pending/accepted request states)
+// ------------------------------------------------
+
+model Follow {
+  id          String       @id @default(cuid())
+  status      FollowStatus @default(PENDING)
+
+  followerId  String
+  follower    User         @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+
+  followingId String
+  following   User         @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([followerId, followingId]) // prevents duplicate follow requests
+  @@index([followingId, status])
+}
+
+// ------------------------------------------------
+// POST
+// ------------------------------------------------
+
+model Post {
+  id        String   @id @default(cuid())
+  content   String
+  imageUrl  String? // URL only, or Cloudinary/Supabase upload URL
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments  Comment[]
+  votes     Vote[]
+  notifications Notification[]
+
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+// ------------------------------------------------
+// COMMENT
+// ------------------------------------------------
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notifications Notification[]
+
+  @@index([postId])
+  @@index([authorId])
+}
+
+// ------------------------------------------------
+// VOTE (Reddit-style like/dislike, one vote per user per post)
+// ------------------------------------------------
+
+model Vote {
+  id      String   @id @default(cuid())
+  type    VoteType
+
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId  String
+  post    Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId]) // one vote per user per post — flip type to change vote
+  @@index([postId, type])
+}
+
+// ------------------------------------------------
+// NOTIFICATION (nice-to-have: likes, comments, follows)
+// ------------------------------------------------
+
+enum NotificationType {
+  LIKE
+  DISLIKE
+  COMMENT
+  FOLLOW_REQUEST
+  FOLLOW_ACCEPTED
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  read      Boolean          @default(false)
+
+  recipientId String
+  recipient   User           @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  actorId     String
+  actor       User           @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  postId    String?
+  post      Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  commentId String?
+  comment   Comment?         @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime         @default(now())
+
+  @@index([recipientId, read])
+}
+
+// ------------------------------------------------
+// MESSAGE (nice-to-have: real-time chat)
+// ------------------------------------------------
+
+model Message {
+  id          String   @id @default(cuid())
+  content     String
+
+  senderId    String
+  sender      User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  recipientId String
+  recipient   User     @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([senderId, recipientId])
+  @@index([recipientId, read])
+}

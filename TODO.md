@@ -60,6 +60,7 @@
 
 - [ ] Loading/skeleton states for infinite scroll
 - [ ] Infinite scroll or pagination on feed
+- [ ] Show users which are online
 - [ ] Empty states (no posts, no followers, etc.)
 - [ ] Responsive design pass
 - [ ] Worm-themed branding: logo, favicon, loading animation, color palette

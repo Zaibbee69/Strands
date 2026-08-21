@@ -1,3 +1,5 @@
+const { Prisma } = require("@prisma/client");
+
 const globalErrorHandler = (err, req, res, next) => {
     // 1. Always log the full stack trace for debugging
     console.error('❌ Error caught by global handler:', err.stack);

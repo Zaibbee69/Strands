@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-const prisma = require("../prisma/prismaClient.js");
+const prisma = require("../prisma/prismaClient");
 
 async function signup(req, res, next) {
 

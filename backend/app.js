@@ -38,5 +38,5 @@ app.use("/auth", authRouter)
 app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
-    console.log(`Server is running and listening on port ${PORT}`);
+    console.log(`Server is running and listening on port http://localhost:${PORT}`);
 })

@@ -1,19 +1,7 @@
 # Strand — Todo List
 
-## 1. Project Setup
-
-- [ ] Init repo, choose stack (Node/Express, DB — Postgres/Mongo, etc.)
-- [ ] Set up folder structure (MVC or similar)
-- [ ] Configure environment variables (.env)
-- [ ] Set up DB connection + ORM/schema (users, posts, comments, follows, likes)
-
 ## 2. Authentication
 
-- [ ] Install & configure Passport
-- [ ] Implement Passport Local strategy (signup/login forms)
-- [ ] Implement Passport GitHub strategy (OAuth app + credentials)
-- [ ] Implement Guest sign-in (temp/anonymous session, no DB record or ephemeral user)
-- [ ] Session/cookie handling (express-session or JWT)
 - [ ] Auth middleware to protect routes
 - [ ] Basic sign-in / sign-up pages (UI)
 

@@ -3,53 +3,80 @@ const passport = require("passport");
 const prisma = require("../prisma/prismaClient");
 
 async function signup(req, res, next) {
+    try {
+        const { username, password } = req.body;
+        const passwordHash = await bcrypt.hash(password, 10);
 
-    const { username, password } = req.body
-    const passwordHash = await bcrypt.hash(password, 10)
+        const user = await prisma.user.create({
+            data: { username, passwordHash, authProvider: "LOCAL" }
+        });
 
-    const user = await prisma.user.create({
-        data: { username, passwordHash, authProvider: "LOCAL" }
-    })
-
-    req.login(user, (err) => {
-        if (err) return next(err)
-        res.redirect("/")
-    })
+        req.login(user, (err) => {
+            if (err) return next(err);
+            return res.status(201).json({ message: "Registration successful", user: { id: user.id, username: user.username } });
+        });
+    } catch (err) {
+        next(err);
+    }
 }
 
-function localLogin() {
-    passport.authenticate("local", { successRedirect: "/", failureRedirect: "/login" })
+function localLogin(req, res, next) {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+            return res.status(401).json({ message: info?.message || "Invalid credentials" });
+        }
+        req.login(user, (loginErr) => {
+            if (loginErr) return next(loginErr);
+            return res.status(200).json({ message: "Login successful", user: { id: user.id, username: user.username } });
+        });
+    })(req, res, next);
 }
 
-function githubLogin() {
-    passport.authenticate("github", { scope: ["user:email"] })
+function githubLogin(req, res, next) {
+    passport.authenticate("github", { scope: ["user:email"] })(req, res, next);
 }
 
-function githubCallback() {
-    passport.authenticate("github", { failureRedirect: "/login" }),
-        (req, res) => res.redirect("/")
+function githubCallback(req, res, next) {
+    passport.authenticate("github", (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json({ message: "GitHub authentication failed" });
+
+        req.login(user, (loginErr) => {
+            if (loginErr) return next(loginErr);
+            return res.status(200).json({ message: "GitHub login successful", user });
+        });
+    })(req, res, next);
 }
 
 async function guestLogin(req, res, next) {
-    const guest = await prisma.user.create({
-        data: {
-            username: `guest_${Date.now()}`,
-            isGuest: true,
-            authProvider: "GUEST",
-        },
-    })
+    try {
+        const guest = await prisma.user.create({
+            data: {
+                username: `guest_${Date.now()}`,
+                isGuest: true,
+                authProvider: "GUEST",
+            },
+        });
 
-    req.login(guest, (err) => {
-        if (err) return next(err);
-        res.redirect("/");
-    });
+        req.login(guest, (err) => {
+            if (err) return next(err);
+            return res.status(201).json({ message: "Guest session started", user: { id: guest.id, username: guest.username } });
+        });
+    } catch (err) {
+        next(err);
+    }
 }
 
 async function logout(req, res, next) {
     req.logout((err) => {
         if (err) return next(err);
-        res.redirect("/login");
+        req.session.destroy((destroyErr) => {
+            if (destroyErr) return next(destroyErr);
+            res.clearCookie("connect.sid");
+            return res.status(200).json({ message: "Logged out successfully" });
+        });
     });
 }
 
-module.exports = { signup, localLogin, githubLogin, githubCallback, guestLogin, logout }
+module.exports = { signup, localLogin, githubLogin, githubCallback, guestLogin, logout };

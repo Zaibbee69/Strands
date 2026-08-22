@@ -2,6 +2,7 @@
 
 ## 2. Authentication
 
+- Add Validation using express validator
 - [ ] Auth middleware to protect routes
 - [ ] Basic sign-in / sign-up pages (UI)
 

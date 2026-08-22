@@ -7,6 +7,7 @@ const passport = require("./config/passport")
 
 // Middleware
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
+const ensureAuthenticated = require("./middlewares/ensureAuthenticated")
 
 // Routes
 const authRouter = require("./routes/authRouter")
@@ -33,6 +34,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/auth", authRouter)
+app.use(ensureAuthenticated)
 
 // --- GLOBAL ERROR HANDLER ---
 app.use(globalErrorHandler);

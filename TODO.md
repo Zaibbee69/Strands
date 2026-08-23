@@ -3,7 +3,7 @@
 ## 2. Authentication
 
 - Add Validation using express validator
-- [ ] Auth middleware to protect routes
+- Add my logo to github login
 - [ ] Basic sign-in / sign-up pages (UI)
 
 ## 3. User & Profile

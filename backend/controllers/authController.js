@@ -79,4 +79,11 @@ async function logout(req, res, next) {
     });
 }
 
-module.exports = { signup, localLogin, githubLogin, githubCallback, guestLogin, logout };
+function getStatus(req, res) {
+    if (req.isAuthenticated && req.isAuthenticated()) {
+        return res.status(200).json({ user: req.user });
+    }
+    return res.status(200).json({ user: null });
+}
+
+module.exports = { signup, localLogin, githubLogin, githubCallback, guestLogin, logout, getStatus };

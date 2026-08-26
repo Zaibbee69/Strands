@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: mytheme --default;
+}
+
+@plugin "daisyui/theme" {
+    name: "mytheme";
+    default: true;
+    prefersdark: true;
+    /* set as default dark mode */
+    color-scheme: dark;
+    /* color of browser-provided UI */
+
+    /* Dark Base Backgrounds (Luxurious Charcoal Matrix) */
+    --color-base-100: oklch(14% 0.005 300);
+    /* Deep Charcoal/Off-Black for main background */
+    --color-base-200: oklch(18% 0.008 300);
+    /* Slightly lighter charcoal for feed cards & lists */
+    --color-base-300: oklch(24% 0.01 300);
+    /* Muted grey for borders, inputs, and lines */
+    --color-base-content: oklch(96% 0.005 300);
+    /* Soft premium white for all main body text */
+
+    /* Brand Colors (Wine Red optimized for dark contrast) */
+    --color-primary: oklch(48% 0.18 15);
+    /* Slightly boosted Wine Red so it pops on dark */
+    --color-primary-content: oklch(100% 0 0);
+    /* White text on primary buttons */
+
+    --color-secondary: oklch(62% 0.02 300);
+    /* Muted Lavender Grey for passive text & secondary tabs */
+    --color-secondary-content: oklch(14% 0.005 300);
+    /* Dark text on secondary buttons */
+
+    --color-accent: oklch(56% 0.21 25);
+    /* Vibrant Crimson Red for notifications & highlights */
+    --color-accent-content: oklch(100% 0 0);
+    /* White text on accent elements */
+
+    --color-neutral: oklch(28% 0.01 300);
+    /* Solid Mid-Grey for buttons or dark highlights */
+    --color-neutral-content: oklch(96% 0.005 300);
+    /* White text on neutral buttons */
+
+    /* Utility Colors (Tweaked slightly for dark mode visibility) */
+    --color-info: oklch(68% 0.14 230);
+    --color-info-content: oklch(14% 0.005 300);
+    --color-success: oklch(66% 0.16 145);
+    --color-success-content: oklch(14% 0.005 300);
+    --color-warning: oklch(82% 0.15 85);
+    --color-warning-content: oklch(18% 0.06 85);
+    --color-error: oklch(58% 0.22 25);
+    --color-error-content: oklch(100% 0 0);
+
+    /* Borders & Effects */
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
+}

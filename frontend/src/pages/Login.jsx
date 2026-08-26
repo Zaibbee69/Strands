@@ -1,4 +1,3 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
 
 export default function Login() {
@@ -12,18 +11,5 @@ export default function Login() {
     navigate("/", { replace: true });
   };
 
-  return (
-    <Flex
-      height="100vh"
-      align="center"
-      justify="center"
-      direction="column"
-      gap={4}
-    >
-      <Heading>Welcome Back</Heading>
-      <Button colorScheme="blue" onClick={handleLogin}>
-        Log In to Social Feed
-      </Button>
-    </Flex>
-  );
+  return <section>lol</section>;
 }

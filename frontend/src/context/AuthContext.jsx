@@ -7,12 +7,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/auth/status", { credentials: "include" })
+    fetch("http://localhost:3000/auth/status", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setUser(data.user))
       .finally(() => setLoading(false));
   }, []);
-
   return (
     <AuthContext.Provider value={{ user, setUser, loading }}>
       {children}

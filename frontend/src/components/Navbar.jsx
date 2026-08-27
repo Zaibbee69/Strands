@@ -6,7 +6,7 @@ export default function Navbar() {
       <div className="flex items-center gap-2">
         <h1 className="text-xl font-bold flex items-center gap-2">
           {/* Custom color hex injected inline for your custom wine theme accent */}
-          <Worm color="#722F37" size={32} />
+          <Worm color="oklch(48% 0.18 15)" size={32} />
           <span>Strands</span>
         </h1>
       </div>

@@ -16,9 +16,12 @@ const authRouter = require("./routes/authRouter")
 const app = express();
 const PORT = process.env.PORT;
 
+// --- UPDATE YOUR CORS CONFIGURATION TO THIS ---
 app.use(cors({
-    origin: true
+    origin: "http://localhost:5173", // Explicitly define your React frontend URL (Do not use true or "*")
+    credentials: true                // Mandate that the backend accepts passport session cookies
 }));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());

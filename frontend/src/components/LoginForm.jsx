@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CandyWorm from "../assets/candy-worm.svg";
 
 export default function LoginForm({ onAuth, loading }) {
   const [username, setUsername] = useState("");
@@ -11,7 +12,16 @@ export default function LoginForm({ onAuth, loading }) {
 
   return (
     <div className="card-body w-full max-w-md gap-4 justify-center">
-      <div className="text-center">
+      <div className="text-center flex flex-col items-center">
+        {/* Your Custom Imported SVG */}
+        <div className="mb-4">
+          <img
+            src={CandyWorm}
+            alt="Candy Worm Logo"
+            className="w-16 h-16 object-contain"
+          />
+        </div>
+
         <h1 className="text-3xl font-bold text-base-content">Welcome Back</h1>
         <p className="text-sm text-secondary mt-1">
           Let’s get you back into your account.

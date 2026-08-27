@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { API_URL } from "../config";
 
 const AuthContext = createContext();
 
@@ -7,7 +8,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/auth/status", { credentials: "include" })
+    fetch(`${API_URL}/auth/status`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setUser(data.user))
       .finally(() => setLoading(false));
@@ -19,6 +20,7 @@ export function AuthProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   return useContext(AuthContext);
 }

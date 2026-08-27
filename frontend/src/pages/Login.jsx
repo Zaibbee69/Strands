@@ -2,8 +2,9 @@ import { useNavigate } from "react-router";
 import useSWRMutation from "swr/mutation";
 import { useAuth } from "../context/AuthContext";
 import LoginForm from "../components/LoginForm";
+import BrandingPanel from "../components/BrandingPanel";
+import { API_URL } from "../config";
 
-// 1. Define a global fetcher function tailored for POST requests
 const sendAuthRequest = async (url, { arg }) => {
   const { action, credentials } = arg;
   const payload = action === "guest" ? {} : credentials;
@@ -57,7 +58,7 @@ export default function Login() {
 
   // 2. Set up the SWR mutation hook pointing to your base auth endpoint
   const { trigger, isMutating, error } = useSWRMutation(
-    "http://localhost:3000/auth",
+    `${API_URL}/auth`,
     sendAuthRequest,
   );
 
@@ -97,19 +98,10 @@ export default function Login() {
         </div>
 
         {/* Divider */}
-        <div className="divider lg:divider-horizontal text-secondary font-bold">
-          OR
-        </div>
+        <div className="divider lg:divider-horizontal text-secondary font-bold"></div>
 
         {/* Right Side: Alternative Card */}
-        <div className="card bg-base-300 rounded-box grid min-h-[450px] grow place-items-center p-4 text-base-content">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold mb-2">Explore the Platform</h2>
-            <p className="text-sm text-secondary">
-              Discover trending feeds and curated global vectors.
-            </p>
-          </div>
-        </div>
+        <BrandingPanel />
       </div>
     </div>
   );

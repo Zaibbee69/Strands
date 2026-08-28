@@ -40,11 +40,14 @@ function githubLogin(req, res, next) {
 function githubCallback(req, res, next) {
     passport.authenticate("github", (err, user) => {
         if (err) return next(err);
-        if (!user) return res.status(401).json({ message: "GitHub authentication failed" });
+        if (!user) {
+            return res.redirect(`${process.env.FRONTEND_URL}/login?error=github_failed`);
+        }
 
         req.login(user, (loginErr) => {
             if (loginErr) return next(loginErr);
-            return res.status(200).json({ message: "GitHub login successful", user });
+            // Full redirect back into your React app — session cookie is already set
+            return res.redirect(`${process.env.FRONTEND_URL}/`);
         });
     })(req, res, next);
 }

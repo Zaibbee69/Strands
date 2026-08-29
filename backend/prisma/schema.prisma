@@ -42,7 +42,6 @@ enum VoteType {
 model User {
   id            String       @id @default(cuid())
   username      String       @unique
-  email         String?      @unique // optional: guests/github may not have one
   passwordHash  String? // only set for LOCAL auth
   avatarUrl     String? // github avatar / gravatar / uploaded
   bio           String?

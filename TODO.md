@@ -4,11 +4,12 @@
 
 - Add Validation using express validator
 add a password see button on input login
-- Make signup page
+-generate each guest user names to be unique like github does its repo names
+change signup page tagline
+- generate unique bio for user too
 
 ## 3. User & Profile
 
-- [ ] User model (username, email, password hash, avatar, bio)
 - [ ] Profile page (view own/other profiles)
 - [ ] Avatar handling: GitHub avatar → fallback to Gravatar
 - [ ] Update profile photo functionality

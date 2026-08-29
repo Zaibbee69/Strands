@@ -11,15 +11,15 @@ const ensureAuthenticated = require("./middlewares/ensureAuthenticated")
 
 // Routes
 const authRouter = require("./routes/authRouter")
+const userRouter = require("./routes/userRouter")
 
 // App Configurations
 const app = express();
 const PORT = process.env.PORT;
 
-// --- UPDATE YOUR CORS CONFIGURATION TO THIS ---
 app.use(cors({
-    origin: "http://localhost:5173", // Explicitly define your React frontend URL (Do not use true or "*")
-    credentials: true                // Mandate that the backend accepts passport session cookies
+    origin: "http://localhost:5173",
+    credentials: true
 }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +37,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/auth", authRouter)
+app.use("/user", userRouter)
 app.use(ensureAuthenticated)
 
 // --- GLOBAL ERROR HANDLER ---

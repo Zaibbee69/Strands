@@ -3,9 +3,8 @@
 ## 2. Authentication
 
 - Add Validation using express validator
-- Add my logo to github login
 add a password see button on input login
-- add option for github login
+- Make signup page
 
 ## 3. User & Profile
 

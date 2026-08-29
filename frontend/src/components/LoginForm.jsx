@@ -127,14 +127,12 @@ export default function LoginForm({ onAuth, loading }) {
 
       <div className="text-center text-sm text-secondary mt-2">
         Don't have an account?{" "}
-        <button
-          type="button"
-          disabled={loading}
-          onClick={(e) => handleSubmit(e, "signup")}
-          className="text-primary font-semibold hover:underline bg-transparent border-none p-0 inline align-baseline cursor-pointer"
+        <a
+          href="/signup"
+          className="text-primary font-semibold hover:underline"
         >
           Sign up
-        </button>
+        </a>
       </div>
     </div>
   );

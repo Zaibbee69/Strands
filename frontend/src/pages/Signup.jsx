@@ -1,8 +1,8 @@
 import { useAuthAction } from "../hooks/useAuthAction";
-import LoginForm from "../components/LoginForm";
+import SignupForm from "../components/SignupForm";
 import BrandingPanel from "../components/BrandingPanel";
 
-export default function Login() {
+export default function Signup() {
   const { handleAuth, isMutating, error } = useAuthAction();
 
   return (
@@ -18,7 +18,7 @@ export default function Login() {
             </div>
           )}
 
-          <LoginForm onAuth={handleAuth} loading={isMutating} />
+          <SignupForm onAuth={handleAuth} loading={isMutating} />
         </div>
 
         <div className="divider lg:divider-horizontal text-secondary font-bold"></div>

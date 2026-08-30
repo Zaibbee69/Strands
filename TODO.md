@@ -7,6 +7,7 @@ add a password see button on input login
 -generate each guest user names to be unique like github does its repo names
 change signup page tagline
 - generate unique bio for user too
+- make an inspiration section randomize for all users
 
 ## 3. User & Profile
 

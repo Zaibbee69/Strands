@@ -38,7 +38,7 @@ app.use(passport.session());
 // Routes
 app.use("/auth", authRouter)
 app.use(ensureAuthenticated)
-app.use("/user", userRouter)
+app.use("/users", userRouter)
 
 // --- GLOBAL ERROR HANDLER ---
 app.use(globalErrorHandler);

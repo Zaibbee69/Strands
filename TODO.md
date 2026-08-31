@@ -8,6 +8,7 @@ add a password see button on input login
 change signup page tagline
 - generate unique bio for user too
 - make an inspiration section randomize for all users
+add a random image generator button on profile
 
 ## 3. User & Profile
 

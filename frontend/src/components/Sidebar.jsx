@@ -11,23 +11,27 @@ import {
 import WormTwisted from "../assets/worm-twisted-mono.svg";
 import WormStraight from "../assets/worm-straight-mono.svg";
 import CandyWorm from "../assets/candy-worm.svg";
-
-const navItems = [
-  { to: "/", label: "Home", icon: Home, end: true },
-  { to: "/create", label: "Create", icon: PlusCircle },
-  { to: "/users", label: "Users", icon: Users },
-  { to: "/messages", label: "Message", icon: MessageSquare },
-  { to: "/likes", label: "Likes", icon: Heart },
-  { to: "/profile", label: "Profile", icon: CircleUserRound },
-  { to: "/settings", label: "Settings", icon: Settings },
-];
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
+  const { user } = useAuth();
+  const userId = user?.id || "me";
+
+  const navItems = [
+    { to: "/", label: "Home", icon: Home, end: true },
+    { to: "/create", label: "Create", icon: PlusCircle },
+    { to: "/users", label: "Users", icon: Users },
+    { to: "/messages", label: "Message", icon: MessageSquare },
+    { to: "/likes", label: "Likes", icon: Heart },
+    { to: `/profile/${userId}`, label: "Profile", icon: CircleUserRound },
+    { to: "/settings", label: "Settings", icon: Settings },
+  ];
+
   return (
     <aside
-      className="relative h-screen sticky top-0 flex flex-col justify-between shrink-0
-                 w-20 lg:w-64 bg-base-100 border-r border-base-300
-                 py-6 px-2 lg:px-4 overflow-hidden transition-[width] duration-300"
+      className="sticky top-0 self-start h-screen flex flex-col justify-between shrink-0
+             w-20 lg:w-64 bg-base-100
+             py-6 px-2 lg:px-4 overflow-hidden transition-[width] duration-300"
     >
       {/* Background watermark worms — clipped, oversized, behind everything */}
       <img

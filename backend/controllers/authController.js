@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const prisma = require("../prisma/prismaClient");
+const { generateGuestProfile } = require("../middlewares/generateGuestProfile");
 
 async function signup(req, res, next) {
     try {
@@ -53,10 +54,14 @@ function githubCallback(req, res, next) {
 }
 
 async function guestLogin(req, res, next) {
+
+    const { username, bio } = generateGuestProfile();
+
     try {
         const guest = await prisma.user.create({
             data: {
-                username: `guest_${Date.now()}`,
+                username: username,
+                bio: bio,
                 isGuest: true,
                 authProvider: "GUEST",
             },

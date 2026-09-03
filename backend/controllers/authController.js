@@ -1,3 +1,4 @@
+const crypto = require("crypto")
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const prisma = require("../prisma/prismaClient");
@@ -54,11 +55,10 @@ function githubCallback(req, res, next) {
 }
 
 async function guestLogin(req, res, next) {
-
     const { username, bio } = generateGuestProfile();
 
     try {
-        const guest = await prisma.user.create({
+        let guest = await prisma.user.create({
             data: {
                 username: username,
                 bio: bio,
@@ -67,9 +67,31 @@ async function guestLogin(req, res, next) {
             },
         });
 
+        // 1. Construct the identifier
+        const uniqueId = `guest_${guest.id}@myapp.internal`.trim().toLowerCase();
+
+        // 2. CRITICAL CHANGE: Gravatar modern standards require a 'sha256' hash, NOT md5
+        const hash = crypto.createHash("sha256").update(uniqueId).digest("hex");
+
+        // 3. Construct the clean URL (using correct variable template literal interpolation)
+        const avatarUrl = `https://www.gravatar.com/avatar/${hash}?d=wavatar&f=y&s=200`;
+
+        // 4. Update the user record
+        guest = await prisma.user.update({
+            where: { id: guest.id },
+            data: { avatarUrl: avatarUrl }
+        });
+
         req.login(guest, (err) => {
             if (err) return next(err);
-            return res.status(201).json({ message: "Guest session started", user: { id: guest.id, username: guest.username } });
+            return res.status(201).json({
+                message: "Guest session started",
+                user: {
+                    id: guest.id,
+                    username: guest.username,
+                    avatarUrl: guest.avatarUrl
+                }
+            });
         });
     } catch (err) {
         next(err);

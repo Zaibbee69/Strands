@@ -12,6 +12,7 @@ const ensureAuthenticated = require("./middlewares/ensureAuthenticated")
 // Routes
 const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
+const postRouter = require("./routes/postRouter")
 
 // App Configurations
 const app = express();
@@ -39,6 +40,7 @@ app.use(passport.session());
 app.use("/auth", authRouter)
 app.use(ensureAuthenticated)
 app.use("/users", userRouter)
+app.use("/posts", postRouter)
 
 // --- GLOBAL ERROR HANDLER ---
 app.use(globalErrorHandler);

@@ -3,17 +3,13 @@
 ## 2. Authentication
 
 - Add Validation using express validator
-add a password see button on input login
--generate each guest user names to be unique like github does its repo names
-change signup page tagline
-- generate unique bio for user too
-- make an inspiration section randomize for all users
-add a random image generator button on profile
+-add a password see button on input login
+-change signup page tagline
+-add a random image generator button on profile
 
 ## 3. User & Profile
 
 - [ ] Profile page (view own/other profiles)
-- [ ] Avatar handling: GitHub avatar → fallback to Gravatar
 - [ ] Update profile photo functionality
 - [ ] Follow/unfollow logic (follow requests, pending state)
 - [ ] Users index page (list all users + follow/pending/following button states)

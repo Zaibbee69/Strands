@@ -10,7 +10,6 @@
 ## 3. User & Profile
 
 - [ ] Profile page (view own/other profiles)
-- [ ] Update profile photo functionality
 - [ ] Follow/unfollow logic (follow requests, pending state)
 - [ ] Users index page (list all users + follow/pending/following button states)
 

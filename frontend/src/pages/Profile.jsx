@@ -4,6 +4,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { ArrowLeft, Pencil, Check, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import PostSection from "../components/PostSection";
 import { API_URL } from "../config";
 
 const fetcher = (url) =>
@@ -228,6 +229,16 @@ export default function Profile() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Posts by this user */}
+      <div className="mt-10 border-t border-base-300">
+        <div className="max-w-xl mx-auto">
+          <h3 className="text-lg font-bold text-center py-5 border-b border-base-300">
+            Posts
+          </h3>
+          <PostSection authorId={profileUser.id} />
+        </div>
       </div>
     </div>
   );

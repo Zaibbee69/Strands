@@ -13,6 +13,7 @@ const ensureAuthenticated = require("./middlewares/ensureAuthenticated")
 const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
 const postRouter = require("./routes/postRouter")
+const uploadRouter = require("./routes/uploadRouter")
 
 // App Configurations
 const app = express();
@@ -41,6 +42,7 @@ app.use("/auth", authRouter)
 app.use(ensureAuthenticated)
 app.use("/users", userRouter)
 app.use("/posts", postRouter)
+app.use("/uploads", uploadRouter)
 
 // --- GLOBAL ERROR HANDLER ---
 app.use(globalErrorHandler);

@@ -9,7 +9,8 @@
 
 ## 3. User & Profile
 
-- [ ] Follow/unfollow logic (follow requests, pending state)
+One thing worth considering down the line: right now this nav item gives no indication of how many pending requests exist — just a static link. When you build Notifications, a small badge count on this icon (like the "3" dot you see on real social apps) would be a natural upgrade, pulling from GET /follow-requests's result length. Not needed now, just flagging it as a nice follow-up once that piece exists.
+
 - [ ] Users index page (list all users + follow/pending/following button states)
 
 ## 4. Posts

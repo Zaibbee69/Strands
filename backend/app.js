@@ -14,6 +14,7 @@ const authRouter = require("./routes/authRouter")
 const userRouter = require("./routes/userRouter")
 const postRouter = require("./routes/postRouter")
 const uploadRouter = require("./routes/uploadRouter")
+const followRequestRouter = require("./routes/followRequestRouter");
 
 // App Configurations
 const app = express();
@@ -43,6 +44,8 @@ app.use(ensureAuthenticated)
 app.use("/users", userRouter)
 app.use("/posts", postRouter)
 app.use("/uploads", uploadRouter)
+app.use("/follow-requests", followRequestRouter);
+
 
 // --- GLOBAL ERROR HANDLER ---
 app.use(globalErrorHandler);

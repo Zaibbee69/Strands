@@ -128,11 +128,29 @@ async function followUser(req, res, next) {
             return res.status(404).json({ message: "User not found" });
         }
 
+        const existing = await prisma.follow.findUnique({
+            where: { followerId_followingId: { followerId, followingId } },
+        });
+
         const follow = await prisma.follow.upsert({
             where: { followerId_followingId: { followerId, followingId } },
-            update: {}, // already exists (PENDING or ACCEPTED) — no-op, idempotent
+            update: {},
             create: { followerId, followingId, status: "PENDING" },
         });
+
+        if (!existing) {
+            try {
+                await prisma.notification.create({
+                    data: {
+                        type: "FOLLOW_REQUEST",
+                        recipientId: followingId,
+                        actorId: followerId,
+                    },
+                });
+            } catch (notifErr) {
+                console.error("Failed to create notification:", notifErr);
+            }
+        }
 
         return res.status(201).json({ status: follow.status });
     } catch (err) {

@@ -7,6 +7,7 @@ import Signup from "./pages/Signup.jsx";
 import CreatePost from "./pages/CreatePost.jsx";
 import UsersIndex from "./pages/UsersIndex.jsx";
 import Messages from "./pages/Messages.jsx";
+import FollowRequests from "./pages/FollowRequests.jsx";
 import Likes from "./pages/Likes.jsx";
 import DashboardLayout from "./layouts/DashboardLayout.jsx";
 import ProtectedRoute from "./context/ProtectedRoute.jsx";
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/likes" element={<Likes />} />
                 <Route path="/profile/:id" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/follow-requests" element={<FollowRequests />} />
               </Route>
             </Route>
           </Route>

@@ -1,5 +1,4 @@
 const prisma = require("../prisma/prismaClient");
-
 async function castVote(req, res, next) {
     try {
         const userId = req.user.id;
@@ -28,6 +27,22 @@ async function castVote(req, res, next) {
                 update: { type },
                 create: { userId, postId, type },
             });
+
+            // Trigger notification if the user liked someone else's post
+            if (type === "LIKE" && post.authorId !== userId) {
+                try {
+                    await prisma.notification.create({
+                        data: {
+                            type: "LIKE",
+                            recipientId: post.authorId,
+                            actorId: userId,
+                            postId,
+                        },
+                    });
+                } catch (notifErr) {
+                    console.error("Failed to create notification:", notifErr);
+                }
+            }
         }
 
         // Recompute the real score + comment count from the DB (source of truth,

@@ -14,6 +14,7 @@ import ProtectedRoute from "./context/ProtectedRoute.jsx";
 import Layout from "./layouts/Layout.jsx";
 import Settings from "./pages/Settings.jsx";
 import Profile from "./pages/Profile.jsx";
+import Notifications from "./pages/Notifications.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/profile/:id" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/follow-requests" element={<FollowRequests />} />
+                <Route path="/notifications" element={<Notifications />} />
               </Route>
             </Route>
           </Route>

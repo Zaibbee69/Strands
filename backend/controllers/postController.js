@@ -108,4 +108,42 @@ async function createPost(req, res, next) {
     }
 }
 
-module.exports = { getPosts, createPost };
+async function getPost(req, res, next) {
+    try {
+        const currentUserId = req.user.id;
+        const { id } = req.params;
+
+        const post = await prisma.post.findUnique({
+            where: { id },
+            include: {
+                author: { select: { id: true, username: true, avatarUrl: true } },
+                votes: { select: { userId: true, type: true } },
+                _count: { select: { comments: true } },
+            },
+        });
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const likeCount = post.votes.filter((v) => v.type === "LIKE").length;
+        const dislikeCount = post.votes.filter((v) => v.type === "DISLIKE").length;
+        const userVoteEntry = post.votes.find((v) => v.userId === currentUserId);
+
+        return res.status(200).json({
+            id: post.id,
+            content: post.content,
+            imageUrl: post.imageUrl,
+            createdAt: post.createdAt,
+            author: post.author,
+            score: likeCount - dislikeCount,
+            commentCount: post._count.comments,
+            userVote: userVoteEntry ? userVoteEntry.type : null,
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports = { getPosts, createPost, getPost };
+

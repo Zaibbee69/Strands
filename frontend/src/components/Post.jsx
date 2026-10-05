@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronUp, ChevronDown, MessageCircle } from "lucide-react";
 import { formatRelativeTime } from "../lib/formatRelativeTime";
+import { Link } from "react-router";
 
 export default function Post({ post, onVote }) {
   const [vote, setVote] = useState(post.userVote);
@@ -107,12 +108,14 @@ export default function Post({ post, onVote }) {
           )}
         </div>
 
-        {/* Interactions */}
         <div className="flex items-center gap-5 text-secondary">
-          <button className="flex items-center gap-1.5 hover:text-primary transition-colors">
+          <Link
+            to={`/posts/${post.id}`}
+            className="flex items-center gap-1.5 hover:text-primary transition-colors"
+          >
             <MessageCircle size={20} />
             <span className="text-sm">{post.commentCount}</span>
-          </button>
+          </Link>
         </div>
       </div>
     </article>

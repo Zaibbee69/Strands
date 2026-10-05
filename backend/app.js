@@ -16,6 +16,8 @@ const postRouter = require("./routes/postRouter")
 const uploadRouter = require("./routes/uploadRouter")
 const followRequestRouter = require("./routes/followRequestRouter");
 const notificationRouter = require("./routes/notificationRouter");
+const commentRouter = require("./routes/commentRouter");
+
 
 // App Configurations
 const app = express();
@@ -47,6 +49,7 @@ app.use("/posts", postRouter)
 app.use("/uploads", uploadRouter)
 app.use("/follow-requests", followRequestRouter);
 app.use("/notifications", notificationRouter);
+app.use("/comments", commentRouter);
 
 
 // --- GLOBAL ERROR HANDLER ---

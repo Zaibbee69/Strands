@@ -15,6 +15,7 @@ import Layout from "./layouts/Layout.jsx";
 import Settings from "./pages/Settings.jsx";
 import Profile from "./pages/Profile.jsx";
 import Notifications from "./pages/Notifications.jsx";
+import PostDetail from "./pages/PostDetail.jsx";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 
@@ -41,6 +42,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/follow-requests" element={<FollowRequests />} />
                 <Route path="/notifications" element={<Notifications />} />
+                <Route path="/posts/:id" element={<PostDetail />} />
               </Route>
             </Route>
           </Route>

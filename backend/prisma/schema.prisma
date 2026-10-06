@@ -35,6 +35,17 @@ enum VoteType {
   DISLIKE
 }
 
+
+enum NotificationType {
+  LIKE
+  DISLIKE
+  COMMENT
+  FOLLOW_REQUEST
+  FOLLOW_ACCEPTED
+  MESSAGE
+}
+
+
 // ------------------------------------------------
 // USER
 // ------------------------------------------------
@@ -162,13 +173,6 @@ model Vote {
 // NOTIFICATION (nice-to-have: likes, comments, follows)
 // ------------------------------------------------
 
-enum NotificationType {
-  LIKE
-  DISLIKE
-  COMMENT
-  FOLLOW_REQUEST
-  FOLLOW_ACCEPTED
-}
 
 model Notification {
   id        String           @id @default(cuid())
@@ -212,3 +216,4 @@ model Message {
   @@index([senderId, recipientId])
   @@index([recipientId, read])
 }
+

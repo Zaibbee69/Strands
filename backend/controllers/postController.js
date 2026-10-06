@@ -3,7 +3,7 @@ const prisma = require("../prisma/prismaClient");
 async function getPosts(req, res, next) {
     try {
         const currentUserId = req.user.id;
-        const { authorId } = req.query;
+        const { authorId, liked } = req.query;
         const feed = req.query.feed === "following" ? "following" : "recent";
         const page = Math.max(parseInt(req.query.page) || 1, 1);
         const limit = Math.min(Math.max(parseInt(req.query.limit) || 10, 1), 50);
@@ -12,8 +12,11 @@ async function getPosts(req, res, next) {
         let where = {};
 
         if (authorId) {
-            // Profile page mode — ignore feed param entirely, just this user's posts
             where = { authorId };
+        } else if (liked === "true") {
+            where = {
+                votes: { some: { userId: currentUserId, type: "LIKE" } },
+            };
         } else if (feed === "following") {
             const following = await prisma.follow.findMany({
                 where: { followerId: currentUserId, status: "ACCEPTED" },

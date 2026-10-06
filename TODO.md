@@ -10,6 +10,7 @@
 - notification number doesnt update once we view a notification
 - add option to view followers and following on profile view page
 - update home out of dummy data
+- add strands github profile pic
 
 ## 3. User & Profile
 

@@ -6,6 +6,10 @@
 -add a password see button on input login
 -change signup page tagline
 -add a random image generator button on profile
+- make users profile clickable on posts
+- notification number doesnt update once we view a notification
+- add option to view followers and following on profile view page
+- update home out of dummy data
 
 ## 3. User & Profile
 

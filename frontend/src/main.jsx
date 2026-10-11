@@ -17,37 +17,37 @@ import Profile from "./pages/Profile.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import PostDetail from "./pages/PostDetail.jsx";
 import { AuthProvider } from "./context/AuthContext";
+import { SocketProvider } from "./context/SocketContext.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* 1. Layout wraps everything inside it */}
-          <Route element={<Layout />}>
-            {/* 2. Login is public, but still inherits the Layout */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-
-            {/* 3. ProtectedRoute only guards the routes nested inside it */}
-            <Route element={<ProtectedRoute />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/" element={<App />} />
-                <Route path="/create" element={<CreatePost />} />
-                <Route path="/users" element={<UsersIndex />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/likes" element={<Likes />} />
-                <Route path="/profile/:id" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/follow-requests" element={<FollowRequests />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/posts/:id" element={<PostDetail />} />
+      <SocketProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route element={<ProtectedRoute />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/" element={<App />} />
+                  <Route path="/create" element={<CreatePost />} />
+                  <Route path="/users" element={<UsersIndex />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/messages/:userId" element={<Messages />} />
+                  <Route path="/likes" element={<Likes />} />
+                  <Route path="/profile/:id" element={<Profile />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/follow-requests" element={<FollowRequests />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/posts/:id" element={<PostDetail />} />
+                </Route>
               </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </SocketProvider>
     </AuthProvider>
   </StrictMode>,
 );

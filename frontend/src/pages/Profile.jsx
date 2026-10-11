@@ -6,6 +6,8 @@ import { ArrowLeft, Pencil, Check, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import PostSection from "../components/PostSection";
 import { API_URL } from "../config";
+import { Link } from "react-router";
+import { MessageSquare } from "lucide-react";
 
 const fetcher = (url) =>
   fetch(url, { credentials: "include" }).then((res) => res.json());
@@ -142,7 +144,16 @@ export default function Profile() {
             </div>
 
             {!isOwnProfile && (
-              <button className="btn btn-primary btn-sm mt-4">Follow</button>
+              <div className="flex gap-2 mt-4">
+                <button className="btn btn-primary btn-sm">Follow</button>
+                <Link
+                  to={`/messages/${profileUser.id}`}
+                  className="btn btn-outline btn-sm gap-1"
+                >
+                  <MessageSquare size={14} />
+                  Message
+                </Link>
+              </div>
             )}
           </div>
         </div>

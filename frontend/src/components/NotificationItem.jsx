@@ -1,5 +1,11 @@
 import { Link, useNavigate } from "react-router";
-import { Heart, UserPlus, UserCheck, MessageCircle } from "lucide-react";
+import {
+  Heart,
+  UserPlus,
+  UserCheck,
+  MessageCircle,
+  MessageSquare,
+} from "lucide-react";
 import { API_URL } from "../config";
 import { formatRelativeTime } from "../lib/formatRelativeTime";
 
@@ -9,6 +15,7 @@ const ICONS = {
   FOLLOW_REQUEST: UserPlus,
   FOLLOW_ACCEPTED: UserCheck,
   COMMENT: MessageCircle,
+  MESSAGE: MessageSquare,
 };
 
 function getMessage(n) {
@@ -21,6 +28,8 @@ function getMessage(n) {
       return "accepted your follow request";
     case "COMMENT":
       return "commented on your post";
+    case "MESSAGE":
+      return "sent you a message";
     default:
       return "interacted with your content";
   }
@@ -29,6 +38,7 @@ function getMessage(n) {
 function getLink(n) {
   if (n.type === "FOLLOW_REQUEST") return "/follow-requests";
   if (n.type === "FOLLOW_ACCEPTED") return `/profile/${n.actor.id}`;
+  if (n.type === "MESSAGE") return `/messages/${n.actor.id}`;
   if (n.post) return `/posts/${n.post.id}`;
   return `/profile/${n.actor.id}`;
 }

@@ -181,6 +181,15 @@ async function unfollowUser(req, res, next) {
 
         await prisma.follow.deleteMany({ where: { followerId, followingId } });
 
+        // Retract the request notification so it doesn't linger after a cancel
+        await prisma.notification.deleteMany({
+            where: {
+                type: "FOLLOW_REQUEST",
+                actorId: followerId,
+                recipientId: followingId,
+            },
+        });
+
         return res.status(200).json({ status: null });
     } catch (err) {
         next(err);

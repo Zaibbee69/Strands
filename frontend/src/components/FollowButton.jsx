@@ -10,7 +10,6 @@ export default function FollowButton({
   const [status, setStatus] = useState(initialStatus);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Stay in sync when the parent refetches and the server value changes
   useEffect(() => {
     setStatus(initialStatus);
   }, [initialStatus]);
@@ -18,8 +17,10 @@ export default function FollowButton({
   const handleClick = async () => {
     setIsLoading(true);
     try {
+      // No relationship yet -> send a request.
+      // PENDING or ACCEPTED -> delete the row (cancel request / unfollow).
       const res = await fetch(`${API_URL}/users/${userId}/follow`, {
-        method: status === "ACCEPTED" ? "DELETE" : "POST",
+        method: status ? "DELETE" : "POST",
         credentials: "include",
       });
       if (!res.ok) throw new Error("Follow action failed");
@@ -36,12 +37,13 @@ export default function FollowButton({
   return (
     <button
       onClick={handleClick}
-      disabled={isLoading || status === "PENDING"}
-      className={`btn btn-sm shrink-0 ${
+      disabled={isLoading}
+      title={status === "PENDING" ? "Cancel request" : undefined}
+      className={`group btn btn-sm shrink-0 ${
         status === "ACCEPTED"
           ? "btn-outline"
           : status === "PENDING"
-            ? "btn-ghost"
+            ? "btn-ghost hover:text-error"
             : "btn-neutral"
       } ${className}`}
     >
@@ -50,7 +52,10 @@ export default function FollowButton({
       ) : status === "ACCEPTED" ? (
         "Unfollow"
       ) : status === "PENDING" ? (
-        "Requested"
+        <>
+          <span className="group-hover:hidden">Requested</span>
+          <span className="hidden group-hover:inline">Cancel</span>
+        </>
       ) : (
         "Follow"
       )}

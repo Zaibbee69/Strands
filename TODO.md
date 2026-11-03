@@ -41,10 +41,6 @@
 - [ ] Notification bell/dropdown UI
 - [ ] Deploy (Render/Railway/Vercel + DB host)
 
-
-Unfinished from your original requirements
-Home right rail is still dummy data. “Latest users” and “Most followed” use hardcoded arrays, and their Follow buttons do nothing. This needs two small endpoints plus wiring UserListWidget to the real follow/unfollow calls.
-The Follow button on Profile.jsx isn’t wired. It renders but has no handler.
 Faker seed script. Not built yet, and it would make polishing much easier since you’d have realistic data to look at.
 Profile photo upload from PC. Right now you can only paste an avatar URL. The Cloudinary flow from CreatePost can be reused.
 Gravatar fallback. Local-signup users have no avatar (the original spec mentioned this).

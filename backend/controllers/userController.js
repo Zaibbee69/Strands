@@ -171,12 +171,107 @@ async function unfollowUser(req, res, next) {
     }
 }
 
+// Shared by both widget endpoints
+function parseLimit(raw) {
+    return Math.min(Math.max(parseInt(raw) || 5, 1), 20);
+}
+
+function widgetSelect(currentUserId) {
+    return {
+        id: true,
+        username: true,
+        avatarUrl: true,
+        bio: true,
+        // Follow row (if any) where the current user is the follower
+        followers: {
+            where: { followerId: currentUserId },
+            select: { status: true },
+        },
+        // Only ACCEPTED follows count as real followers
+        _count: { select: { followers: { where: { status: "ACCEPTED" } } } },
+    };
+}
+
+function formatWidgetUser(u) {
+    return {
+        id: u.id,
+        username: u.username,
+        avatarUrl: u.avatarUrl,
+        bio: u.bio,
+        followerCount: u._count.followers,
+        followStatus: u.followers[0]?.status ?? null, // null | "PENDING" | "ACCEPTED"
+    };
+}
+
+async function getLatestUsers(req, res, next) {
+    try {
+        const currentUserId = req.user.id;
+        const limit = parseLimit(req.query.limit);
+
+        const users = await prisma.user.findMany({
+            where: { id: { not: currentUserId }, isGuest: false },
+            orderBy: { createdAt: "desc" },
+            take: limit,
+            select: widgetSelect(currentUserId),
+        });
+
+        return res.status(200).json({ users: users.map(formatWidgetUser) });
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function getMostFollowedUsers(req, res, next) {
+    try {
+        const currentUserId = req.user.id;
+        const limit = parseLimit(req.query.limit);
+
+        // Prisma can't order by a *filtered* relation count, so rank with groupBy
+        // on the Follow table (ACCEPTED only), then load the user details.
+        const ranked = await prisma.follow.groupBy({
+            by: ["followingId"],
+            where: {
+                status: "ACCEPTED",
+                followingId: { not: currentUserId },
+                following: { isGuest: false },
+            },
+            _count: { followingId: true },
+            orderBy: { _count: { followingId: "desc" } },
+            take: limit,
+        });
+
+        const ids = ranked.map((r) => r.followingId);
+        if (ids.length === 0) {
+            return res.status(200).json({ users: [] });
+        }
+
+        const users = await prisma.user.findMany({
+            where: { id: { in: ids } },
+            select: widgetSelect(currentUserId),
+        });
+
+        // findMany doesn't preserve the ranking, so restore it
+        const byId = new Map(users.map((u) => [u.id, u]));
+        const ordered = ids
+            .map((id) => byId.get(id))
+            .filter(Boolean)
+            .map(formatWidgetUser);
+
+        return res.status(200).json({ users: ordered });
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     getUser,
     updateUser,
     listUsers,
     followUser,
     unfollowUser,
+    getLatestUsers,
+    getMostFollowedUsers,
 };
+
 
 

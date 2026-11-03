@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import PostSection from "../components/PostSection";
 import { API_URL } from "../config";
 import { Link } from "react-router";
+import FollowButton from "../components/FollowButton";
 import { MessageSquare } from "lucide-react";
 
 const fetcher = (url) =>
@@ -145,7 +146,11 @@ export default function Profile() {
 
             {!isOwnProfile && (
               <div className="flex gap-2 mt-4">
-                <button className="btn btn-primary btn-sm">Follow</button>
+                <FollowButton
+                  userId={profileUser.id}
+                  initialStatus={profileUser.followStatus}
+                  onChange={() => mutate()}
+                />
                 <Link
                   to={`/messages/${profileUser.id}`}
                   className="btn btn-outline btn-sm gap-1"

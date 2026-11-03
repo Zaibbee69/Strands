@@ -2,7 +2,9 @@ const prisma = require("../prisma/prismaClient");
 
 async function getUser(req, res, next) {
     try {
+        const currentUserId = req.user.id;
         const userId = req.params.id;
+
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: {
@@ -12,16 +14,30 @@ async function getUser(req, res, next) {
                 bio: true,
                 isGuest: true,
                 createdAt: true,
+                // Follow row (if any) where the viewer is the follower
+                followers: {
+                    where: { followerId: currentUserId },
+                    select: { status: true },
+                },
                 _count: {
-                    select: { followers: true, following: true, posts: true }
-                }
-            }
+                    select: {
+                        followers: { where: { status: "ACCEPTED" } },
+                        following: { where: { status: "ACCEPTED" } },
+                        posts: true,
+                    },
+                },
+            },
         });
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        return res.status(200).json(user);
+
+        const { followers, ...rest } = user;
+        return res.status(200).json({
+            ...rest,
+            followStatus: followers[0]?.status ?? null, // null | "PENDING" | "ACCEPTED"
+        });
     } catch (err) {
         next(err);
     }

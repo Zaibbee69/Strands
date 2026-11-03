@@ -1,42 +1,7 @@
-import { useState } from "react";
 import { Link } from "react-router";
-import { API_URL } from "../config";
+import FollowButton from "./FollowButton";
 
 export default function UserCard({ user }) {
-  const [followStatus, setFollowStatus] = useState(user.followStatus);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleFollow = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch(`${API_URL}/users/${user.id}/follow`, {
-        method: "POST",
-        credentials: "include",
-      });
-      const data = await res.json();
-      if (res.ok) setFollowStatus(data.status);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleUnfollow = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch(`${API_URL}/users/${user.id}/follow`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (res.ok) setFollowStatus(null);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="break-inside-avoid mb-4 bg-base-200 border border-base-300 rounded-box p-4">
       <Link
@@ -64,32 +29,14 @@ export default function UserCard({ user }) {
           )}
         </p>
 
-        <p className="text-sm text-secondary line-clamp-3">
-          {user.bio || "No bio yet"}
-        </p>
+        <p className="text-sm text-secondary">{user.bio || "No bio yet"}</p>
       </Link>
 
-      <button
-        onClick={followStatus === "ACCEPTED" ? handleUnfollow : handleFollow}
-        disabled={isLoading || followStatus === "PENDING"}
-        className={`btn btn-sm w-full mt-3 ${
-          followStatus === "ACCEPTED"
-            ? "btn-outline"
-            : followStatus === "PENDING"
-              ? "btn-ghost"
-              : "btn-neutral"
-        }`}
-      >
-        {isLoading ? (
-          <span className="loading loading-spinner loading-xs"></span>
-        ) : followStatus === "ACCEPTED" ? (
-          "Unfollow"
-        ) : followStatus === "PENDING" ? (
-          "Requested"
-        ) : (
-          "Follow"
-        )}
-      </button>
+      <FollowButton
+        userId={user.id}
+        initialStatus={user.followStatus}
+        className="w-full mt-3"
+      />
     </div>
   );
 }

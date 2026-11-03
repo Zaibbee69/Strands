@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "../config";
 
-export default function FollowButton({ userId, initialStatus, onChange }) {
+export default function FollowButton({
+  userId,
+  initialStatus,
+  onChange,
+  className = "",
+}) {
   const [status, setStatus] = useState(initialStatus);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +43,7 @@ export default function FollowButton({ userId, initialStatus, onChange }) {
           : status === "PENDING"
             ? "btn-ghost"
             : "btn-neutral"
-      }`}
+      } ${className}`}
     >
       {isLoading ? (
         <span className="loading loading-spinner loading-xs"></span>
